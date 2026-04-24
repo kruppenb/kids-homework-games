@@ -1,0 +1,89 @@
+{
+  "id": "math-g1-addition-within-10",
+  "subject": "math",
+  "grade": "1",
+  "title": "Adding to 10",
+  "topic": "addition",
+  "problems": [
+    {
+      "id": "p1",
+      "format": "multiple-choice",
+      "prompt": "2 + 3 = ?",
+      "options": ["4", "5", "6", "7"],
+      "correctIndex": 1,
+      "explanation": "2 and 3 more makes 5."
+    },
+    {
+      "id": "p2",
+      "format": "multiple-choice",
+      "prompt": "4 + 4 = ?",
+      "options": ["6", "7", "8", "9"],
+      "correctIndex": 2,
+      "explanation": "Doubles! 4 + 4 is 8."
+    },
+    {
+      "id": "p3",
+      "format": "multiple-choice",
+      "prompt": "1 + 6 = ?",
+      "options": ["5", "6", "7", "8"],
+      "correctIndex": 2,
+      "explanation": "One more than 6 is 7."
+    },
+    {
+      "id": "p4",
+      "format": "multiple-choice",
+      "prompt": "5 + 2 = ?",
+      "options": ["6", "7", "8", "9"],
+      "correctIndex": 1,
+      "explanation": "5 plus 2 equals 7."
+    },
+    {
+      "id": "p5",
+      "format": "multiple-choice",
+      "prompt": "3 + 3 = ?",
+      "options": ["5", "6", "7", "8"],
+      "correctIndex": 1,
+      "explanation": "Doubles! 3 + 3 is 6."
+    },
+    {
+      "id": "p6",
+      "format": "multiple-choice",
+      "prompt": "7 + 2 = ?",
+      "options": ["8", "9", "10", "11"],
+      "correctIndex": 1,
+      "explanation": "Two more than 7 is 9."
+    },
+    {
+      "id": "p7",
+      "format": "multiple-choice",
+      "prompt": "5 + 5 = ?",
+      "options": ["9", "10", "11", "12"],
+      "correctIndex": 1,
+      "explanation": "Doubles! 5 + 5 is 10."
+    },
+    {
+      "id": "p8",
+      "format": "multiple-choice",
+      "prompt": "6 + 3 = ?",
+      "options": ["7", "8", "9", "10"],
+      "correctIndex": 2,
+      "explanation": "6 plus 3 equals 9."
+    },
+    {
+      "id": "p9",
+      "format": "multiple-choice",
+      "prompt": "0 + 8 = ?",
+      "options": ["0", "7", "8", "9"],
+      "correctIndex": 2,
+      "explanation": "Adding zero doesn't change the number — still 8."
+    },
+    {
+      "id": "p10",
+      "format": "multiple-choice",
+      "prompt": "4 + 5 = ?",
+      "options": ["8", "9", "10", "11"],
+      "correctIndex": 1,
+      "explanation": "4 plus 5 equals 9."
+    }
+  ]
+}

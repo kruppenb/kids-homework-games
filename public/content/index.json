@@ -1,0 +1,24 @@
+{
+  "sets": [
+    {
+      "id": "math-g1-addition-within-10",
+      "subject": "math",
+      "grade": "1",
+      "title": "Adding to 10",
+      "topic": "addition",
+      "path": "/content/math/grade-1/addition-within-10.json",
+      "problemCount": 10,
+      "formats": ["multiple-choice"]
+    },
+    {
+      "id": "math-g4-multiplication-facts",
+      "subject": "math",
+      "grade": "4",
+      "title": "Multiplication Facts",
+      "topic": "multiplication",
+      "path": "/content/math/grade-4/multiplication-facts.json",
+      "problemCount": 10,
+      "formats": ["multiple-choice", "numeric"]
+    }
+  ]
+}

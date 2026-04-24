@@ -1,0 +1,85 @@
+{
+  "id": "math-g4-multiplication-facts",
+  "subject": "math",
+  "grade": "4",
+  "title": "Multiplication Facts",
+  "topic": "multiplication",
+  "problems": [
+    {
+      "id": "p1",
+      "format": "multiple-choice",
+      "prompt": "7 × 8 = ?",
+      "options": ["48", "54", "56", "64"],
+      "correctIndex": 2,
+      "explanation": "7 × 8 = 56. A tricky one to memorize!"
+    },
+    {
+      "id": "p2",
+      "format": "numeric",
+      "prompt": "6 × 9 = ?",
+      "answer": 54,
+      "explanation": "6 × 9 = 54. Trick: in the 9s, the digits of each answer add to 9 (5 + 4 = 9)."
+    },
+    {
+      "id": "p3",
+      "format": "multiple-choice",
+      "prompt": "12 × 4 = ?",
+      "options": ["42", "46", "48", "52"],
+      "correctIndex": 2,
+      "explanation": "12 × 4 = 48. Think 10 × 4 = 40, plus 2 × 4 = 8."
+    },
+    {
+      "id": "p4",
+      "format": "numeric",
+      "prompt": "9 × 9 = ?",
+      "answer": 81,
+      "explanation": "9 × 9 = 81."
+    },
+    {
+      "id": "p5",
+      "format": "multiple-choice",
+      "prompt": "8 × 6 = ?",
+      "options": ["42", "46", "48", "54"],
+      "correctIndex": 2,
+      "explanation": "8 × 6 = 48."
+    },
+    {
+      "id": "p6",
+      "format": "numeric",
+      "prompt": "11 × 7 = ?",
+      "answer": 77,
+      "explanation": "11 × 7 = 77. For 11 × single digit, just repeat the digit."
+    },
+    {
+      "id": "p7",
+      "format": "multiple-choice",
+      "prompt": "7 × 7 = ?",
+      "options": ["42", "47", "49", "56"],
+      "correctIndex": 2,
+      "explanation": "7 × 7 = 49."
+    },
+    {
+      "id": "p8",
+      "format": "numeric",
+      "prompt": "8 × 8 = ?",
+      "answer": 64,
+      "explanation": "8 × 8 = 64."
+    },
+    {
+      "id": "p9",
+      "format": "multiple-choice",
+      "prompt": "6 × 7 = ?",
+      "options": ["36", "42", "48", "54"],
+      "correctIndex": 1,
+      "explanation": "6 × 7 = 42."
+    },
+    {
+      "id": "p10",
+      "format": "multiple-choice",
+      "prompt": "12 × 12 = ?",
+      "options": ["124", "132", "144", "156"],
+      "correctIndex": 2,
+      "explanation": "12 × 12 = 144. A gross, literally!"
+    }
+  ]
+}
