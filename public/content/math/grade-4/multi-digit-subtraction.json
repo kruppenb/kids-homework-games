@@ -1,0 +1,82 @@
+{
+  "id": "math-g4-multi-digit-subtraction",
+  "subject": "math",
+  "grade": "4",
+  "title": "Multi-Digit Subtraction",
+  "topic": "subtraction",
+  "problems": [
+    {
+      "id": "p1",
+      "format": "numeric",
+      "prompt": "452 - 137 = ?",
+      "answer": 315,
+      "explanation": "Borrow from the tens. 452 - 137 = 315."
+    },
+    {
+      "id": "p2",
+      "format": "numeric",
+      "prompt": "800 - 456 = ?",
+      "answer": 344,
+      "explanation": "800 - 456 = 344. Borrow across two columns."
+    },
+    {
+      "id": "p3",
+      "format": "multiple-choice",
+      "prompt": "1000 - 250 = ?",
+      "options": ["650", "750", "850", "950"],
+      "correctIndex": 1,
+      "explanation": "1000 - 250 = 750."
+    },
+    {
+      "id": "p4",
+      "format": "numeric",
+      "prompt": "643 - 218 = ?",
+      "answer": 425,
+      "explanation": "643 - 218 = 425."
+    },
+    {
+      "id": "p5",
+      "format": "multiple-choice",
+      "prompt": "527 - 89 = ?",
+      "options": ["428", "438", "448", "458"],
+      "correctIndex": 1,
+      "explanation": "527 - 89 = 438."
+    },
+    {
+      "id": "p6",
+      "format": "numeric",
+      "prompt": "300 - 175 = ?",
+      "answer": 125,
+      "explanation": "300 - 175 = 125. Half of 250 plus 0."
+    },
+    {
+      "id": "p7",
+      "format": "numeric",
+      "prompt": "912 - 348 = ?",
+      "answer": 564,
+      "explanation": "912 - 348 = 564."
+    },
+    {
+      "id": "p8",
+      "format": "multiple-choice",
+      "prompt": "1200 - 750 = ?",
+      "options": ["350", "400", "450", "500"],
+      "correctIndex": 2,
+      "explanation": "1200 - 750 = 450."
+    },
+    {
+      "id": "p9",
+      "format": "numeric",
+      "prompt": "405 - 167 = ?",
+      "answer": 238,
+      "explanation": "405 - 167 = 238."
+    },
+    {
+      "id": "p10",
+      "format": "numeric",
+      "prompt": "1500 - 999 = ?",
+      "answer": 501,
+      "explanation": "Trick: 1500 - 1000 = 500, then add back 1 = 501."
+    }
+  ]
+}

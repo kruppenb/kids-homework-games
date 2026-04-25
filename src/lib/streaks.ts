@@ -47,11 +47,18 @@ export function getTodayProgress(entries: DailyProgress[]): DailyProgress {
   );
 }
 
+export interface SessionRecordResult {
+  daily: DailyProgress[];
+  prevStreak: number;
+  newStreak: number;
+}
+
 export function recordSessionInDailyProgress(
   profile: KidProfile,
   session: SessionResult,
-): DailyProgress[] {
+): SessionRecordResult {
   const existing = getDailyProgress(profile.id);
+  const prevStreak = computeStreak(existing);
   const today = todayKey();
   const currentToday = existing.find((e) => e.date === today);
   const nextToday: DailyProgress = {
@@ -66,5 +73,6 @@ export function recordSessionInDailyProgress(
     nextToday,
   ].sort((a, b) => a.date.localeCompare(b.date));
   saveDailyProgress(profile.id, updated);
-  return updated;
+  const newStreak = computeStreak(updated);
+  return { daily: updated, prevStreak, newStreak };
 }

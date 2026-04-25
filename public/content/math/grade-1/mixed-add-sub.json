@@ -1,0 +1,89 @@
+{
+  "id": "math-g1-mixed-add-sub",
+  "subject": "math",
+  "grade": "1",
+  "title": "Mix It Up",
+  "topic": "addition-subtraction",
+  "problems": [
+    {
+      "id": "p1",
+      "format": "multiple-choice",
+      "prompt": "3 + 4 = ?",
+      "options": ["6", "7", "8", "9"],
+      "correctIndex": 1,
+      "explanation": "3 plus 4 is 7."
+    },
+    {
+      "id": "p2",
+      "format": "multiple-choice",
+      "prompt": "9 - 3 = ?",
+      "options": ["5", "6", "7", "8"],
+      "correctIndex": 1,
+      "explanation": "9 minus 3 leaves 6."
+    },
+    {
+      "id": "p3",
+      "format": "multiple-choice",
+      "prompt": "2 + 7 = ?",
+      "options": ["8", "9", "10", "11"],
+      "correctIndex": 1,
+      "explanation": "2 plus 7 is 9."
+    },
+    {
+      "id": "p4",
+      "format": "multiple-choice",
+      "prompt": "10 - 6 = ?",
+      "options": ["3", "4", "5", "6"],
+      "correctIndex": 1,
+      "explanation": "10 take away 6 leaves 4."
+    },
+    {
+      "id": "p5",
+      "format": "multiple-choice",
+      "prompt": "5 + 4 = ?",
+      "options": ["7", "8", "9", "10"],
+      "correctIndex": 2,
+      "explanation": "5 plus 4 is 9."
+    },
+    {
+      "id": "p6",
+      "format": "multiple-choice",
+      "prompt": "8 - 5 = ?",
+      "options": ["2", "3", "4", "5"],
+      "correctIndex": 1,
+      "explanation": "8 minus 5 is 3."
+    },
+    {
+      "id": "p7",
+      "format": "multiple-choice",
+      "prompt": "1 + 9 = ?",
+      "options": ["8", "9", "10", "11"],
+      "correctIndex": 2,
+      "explanation": "1 plus 9 makes 10."
+    },
+    {
+      "id": "p8",
+      "format": "multiple-choice",
+      "prompt": "7 - 2 = ?",
+      "options": ["4", "5", "6", "7"],
+      "correctIndex": 1,
+      "explanation": "7 minus 2 is 5."
+    },
+    {
+      "id": "p9",
+      "format": "multiple-choice",
+      "prompt": "6 + 4 = ?",
+      "options": ["8", "9", "10", "11"],
+      "correctIndex": 2,
+      "explanation": "6 plus 4 makes 10."
+    },
+    {
+      "id": "p10",
+      "format": "multiple-choice",
+      "prompt": "10 - 3 = ?",
+      "options": ["5", "6", "7", "8"],
+      "correctIndex": 2,
+      "explanation": "10 minus 3 leaves 7."
+    }
+  ]
+}

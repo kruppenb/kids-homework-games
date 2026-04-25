@@ -1,0 +1,87 @@
+{
+  "id": "math-g4-fractions-intro",
+  "subject": "math",
+  "grade": "4",
+  "title": "Fractions Intro",
+  "topic": "fractions",
+  "problems": [
+    {
+      "id": "p1",
+      "format": "multiple-choice",
+      "prompt": "Which fraction is the largest?",
+      "options": ["1/2", "1/3", "1/4", "1/8"],
+      "correctIndex": 0,
+      "explanation": "When the top is the same, smaller bottom = bigger piece. 1/2 is the biggest."
+    },
+    {
+      "id": "p2",
+      "format": "multiple-choice",
+      "prompt": "What is 1/2 + 1/2?",
+      "options": ["1/2", "1/4", "1", "2"],
+      "correctIndex": 2,
+      "explanation": "Two halves make one whole."
+    },
+    {
+      "id": "p3",
+      "format": "multiple-choice",
+      "prompt": "Which fraction equals 1/2?",
+      "options": ["2/3", "2/4", "3/4", "1/3"],
+      "correctIndex": 1,
+      "explanation": "2/4 simplifies to 1/2."
+    },
+    {
+      "id": "p4",
+      "format": "multiple-choice",
+      "prompt": "What is 3/4 + 1/4?",
+      "options": ["1/2", "3/4", "1", "4/8"],
+      "correctIndex": 2,
+      "explanation": "3/4 + 1/4 = 4/4 = 1."
+    },
+    {
+      "id": "p5",
+      "format": "multiple-choice",
+      "prompt": "If a pizza has 8 slices and you eat 2, what fraction did you eat?",
+      "options": ["1/8", "1/4", "1/2", "2/4"],
+      "correctIndex": 1,
+      "explanation": "2/8 = 1/4. You ate one quarter."
+    },
+    {
+      "id": "p6",
+      "format": "true-false",
+      "prompt": "1/3 is bigger than 1/4.",
+      "answer": true,
+      "explanation": "True! Smaller bottom = bigger piece."
+    },
+    {
+      "id": "p7",
+      "format": "multiple-choice",
+      "prompt": "Which is smaller: 2/5 or 3/5?",
+      "options": ["2/5", "3/5", "They're equal", "Can't tell"],
+      "correctIndex": 0,
+      "explanation": "Same bottom, so smaller top means smaller fraction."
+    },
+    {
+      "id": "p8",
+      "format": "multiple-choice",
+      "prompt": "What is 5/8 - 2/8?",
+      "options": ["1/8", "2/8", "3/8", "7/8"],
+      "correctIndex": 2,
+      "explanation": "Same bottom, just subtract the tops: 5 - 2 = 3, so 3/8."
+    },
+    {
+      "id": "p9",
+      "format": "true-false",
+      "prompt": "4/4 equals 1 whole.",
+      "answer": true,
+      "explanation": "True! When the top equals the bottom, it's one whole."
+    },
+    {
+      "id": "p10",
+      "format": "multiple-choice",
+      "prompt": "Which fraction is closest to 1?",
+      "options": ["1/2", "3/4", "1/4", "7/8"],
+      "correctIndex": 3,
+      "explanation": "7/8 is just one-eighth away from 1 — closest of these."
+    }
+  ]
+}

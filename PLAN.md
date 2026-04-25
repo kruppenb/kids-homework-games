@@ -247,34 +247,37 @@ Goal: one kid can pick their profile, play one math set in one game, see their s
 
 **Phase 0 done when**: 4th grader can open the site on their device, pick their profile, play a math set of Quiz Showdown end-to-end, see today's-goal progress update, and close the tab. Same for 1st grader with an addition set.
 
-### Phase 1: Second game + 1st-grader path
+### Phase 1: Second game + 1st-grader path ✅
 
 Goal: more variety, make sure the content loader + game compat matrix actually works across subjects/grades.
 
-**1.1 — Second game: Jeopardy**
-- Pick based on what engages the 4th grader most. Jeopardy works well for mixed-topic review.
-- Requires `minProblemsToPlay: 15` (5 categories × 3 levels). Landing page gates visibility.
+**1.1 — Speed Run** ✅ (replaced original Jeopardy plan — Jeopardy needs category metadata that math content doesn't naturally provide)
+- Timer per problem (12s), combo multiplier (1×, 2×, 3×, …) on consecutive correct
+- Wrong/timeout breaks combo. Score = sum of (basePoints × combo at time of answer)
+- Tuned for fluency drilling — 4th grader audience
 
-**1.2 — Second game: something for the 1st grader**
-- Word Scramble only makes sense for spelling/vocab, not math. Probably a simple "match the answer" drag-drop instead, or a tower-defense-lite with very simple waves.
-- Decide after observing 1st grader playing Quiz Showdown.
+**1.2 — Tower Builder** ✅
+- Each correct answer adds a colored block to a visual tower
+- No timer. Friendlier for 1st grader.
+- Both games support MC, numeric, true/false formats
 
-**1.3 — Two more content sets per kid**
-- 4th grade: fractions intro, multi-digit subtraction
-- 1st grade: subtraction within 10, number recognition
+**1.3 — More content sets** ✅
+- 4th grade: multi-digit subtraction, fractions intro (added to existing multiplication facts)
+- 1st grade: subtraction within 10, mixed add/sub (added to existing addition)
+- Total: 6 sets at Phase 1 close
 
-**1.4 — Sound + feedback polish**
-- Correct/wrong sound (reuse church-games `sounds.ts` pattern)
-- Subtle celebration animation on streak milestones
+**1.4 — Sound effects** ✅
+- WebAudio-based correct/wrong/level-up tones in `lib/sounds.ts`
+- Mute toggle on Home, persisted in localStorage at `khg:muted`
 
-### Phase 2: Encouragement loop
+### Phase 2: Encouragement loop ✅
 
 Goal: kids open the site *without being asked* because the loop is engaging.
 
-**2.1 — Streak visualization** — calendar heatmap of last 30 days
-**2.2 — Per-subject progress** — "You've answered 47 multiplication questions, 41 correct"
-**2.3 — Weekly summary** — parent-visible page: what was practiced, what's trending up/down
-**2.4 — Customizable avatars / simple unlockables** — earn a new avatar at streak milestones
+**2.1 — Streak heatmap** ✅ — Last 14 days as 2 weeks × 7 days grid on Home. Color-coded by goal-met vs partial vs idle.
+**2.2 — Per-subject progress** ✅ — `Your progress` panel on Home aggregates sessions by topic, shows accuracy badge + last-played.
+**2.3 — Weekly summary** — *Subsumed into 2.2.* The TopicStats panel already gives parent-visible summary.
+**2.4 — Avatar unlocks** ✅ — 6 bonus avatars unlock at streak milestones (3, 7, 14, 30, 50, 100 days). Banner notification on cross-threshold. AvatarPickerModal opened from header avatar tap.
 
 ### Phase 3+: Expand as real needs surface
 

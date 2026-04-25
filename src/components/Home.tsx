@@ -2,28 +2,45 @@ import { useEffect, useState } from "react";
 import { loadManifest } from "@/lib/content-loader";
 import { GAMES } from "@/lib/games-registry";
 import { computeStreak, getTodayProgress } from "@/lib/streaks";
-import { getDailyProgress } from "@/lib/storage";
+import { getDailyProgress, getSessions } from "@/lib/storage";
+import { isMuted, setMuted } from "@/lib/sounds";
 import type {
+  ContentManifest,
   ContentManifestEntry,
   QuestionFormat,
 } from "@/types/content";
-import type { DailyProgress, KidProfile } from "@/types/profile";
+import type { DailyProgress, KidProfile, SessionResult } from "@/types/profile";
+import { StreakHeatmap } from "@/components/StreakHeatmap";
+import { TopicStats } from "@/components/TopicStats";
+import { AvatarPickerModal } from "@/components/AvatarPickerModal";
 
 interface Props {
   profile: KidProfile;
   onPlay: (entry: ContentManifestEntry, gameId: string) => void;
   onSwitchProfile: () => void;
+  onUpdateProfile: (patch: Partial<KidProfile>) => void;
 }
 
-export function Home({ profile, onPlay, onSwitchProfile }: Props) {
-  const [sets, setSets] = useState<ContentManifestEntry[] | null>(null);
+export function Home({
+  profile,
+  onPlay,
+  onSwitchProfile,
+  onUpdateProfile,
+}: Props) {
+  const [manifest, setManifest] = useState<ContentManifest | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [daily, setDaily] = useState<DailyProgress[]>(() =>
     getDailyProgress(profile.id),
   );
+  const [sessions, setSessions] = useState<SessionResult[]>(() =>
+    getSessions(profile.id),
+  );
+  const [muted, setMutedState] = useState<boolean>(() => isMuted());
+  const [editingAvatar, setEditingAvatar] = useState(false);
 
   useEffect(() => {
     setDaily(getDailyProgress(profile.id));
+    setSessions(getSessions(profile.id));
   }, [profile.id]);
 
   useEffect(() => {
@@ -31,8 +48,7 @@ export function Home({ profile, onPlay, onSwitchProfile }: Props) {
     loadManifest()
       .then((m) => {
         if (cancelled) return;
-        const mine = m.sets.filter((s) => s.grade === profile.grade);
-        setSets(mine);
+        setManifest(m);
       })
       .catch((e: unknown) => {
         if (cancelled) return;
@@ -41,8 +57,11 @@ export function Home({ profile, onPlay, onSwitchProfile }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [profile.grade]);
+  }, []);
 
+  const sets = manifest
+    ? manifest.sets.filter((s) => s.grade === profile.grade)
+    : null;
   const streak = computeStreak(daily);
   const today = getTodayProgress(daily);
   const goalPct = Math.min(
@@ -50,33 +69,55 @@ export function Home({ profile, onPlay, onSwitchProfile }: Props) {
     Math.round((today.problemsCompleted / profile.dailyGoal) * 100),
   );
 
+  function toggleMute() {
+    const next = !muted;
+    setMuted(next);
+    setMutedState(next);
+  }
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-sky-50 to-indigo-100 p-4">
+    <main className="min-h-screen bg-gradient-to-br from-sky-50 to-indigo-100 p-4 pb-12">
       <div className="mx-auto max-w-3xl pt-6">
-        <header className="flex items-center justify-between">
-          <button
-            type="button"
-            onClick={onSwitchProfile}
-            className="flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-50"
-          >
-            <span className="text-xl leading-none" aria-hidden>
+        <header className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 rounded-full bg-white px-2 py-1 shadow-sm ring-1 ring-slate-200">
+            <button
+              type="button"
+              onClick={() => setEditingAvatar(true)}
+              className="rounded-full p-1 text-2xl leading-none transition hover:bg-slate-100"
+              aria-label="Change avatar"
+            >
               {profile.avatar}
+            </button>
+            <span className="text-sm font-semibold text-slate-700">
+              {profile.name}
             </span>
-            <span>{profile.name}</span>
-            <span className="text-slate-400">·</span>
-            <span className="text-slate-500">Switch</span>
-          </button>
-          <div className="flex items-center gap-2 rounded-full bg-amber-100 px-3 py-2 text-sm font-semibold text-amber-800 shadow-sm">
-            <span aria-hidden>🔥</span>
-            <span>{streak}-day streak</span>
+            <button
+              type="button"
+              onClick={onSwitchProfile}
+              className="ml-1 rounded-full px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100"
+            >
+              Switch
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleMute}
+              aria-label={muted ? "Unmute" : "Mute"}
+              className="rounded-full bg-white p-2 text-lg shadow-sm ring-1 ring-slate-200 hover:bg-slate-50"
+            >
+              {muted ? "🔇" : "🔊"}
+            </button>
+            <div className="flex items-center gap-2 rounded-full bg-amber-100 px-3 py-2 text-sm font-semibold text-amber-800 shadow-sm">
+              <span aria-hidden>🔥</span>
+              <span>{streak}-day streak</span>
+            </div>
           </div>
         </header>
 
-        <section className="mt-8 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+        <section className="mt-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900">
-              Today's goal
-            </h2>
+            <h2 className="text-lg font-bold text-slate-900">Today's goal</h2>
             <span className="text-sm font-semibold text-slate-600">
               {today.problemsCompleted} / {profile.dailyGoal}
             </span>
@@ -94,6 +135,20 @@ export function Home({ profile, onPlay, onSwitchProfile }: Props) {
               ✓ Goal met! Keep practicing if you want.
             </p>
           )}
+        </section>
+
+        <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
+          <StreakHeatmap entries={daily} dailyGoal={profile.dailyGoal} />
+        </section>
+
+        <section className="mt-6">
+          <h2 className="text-lg font-bold text-slate-900">Your progress</h2>
+          <div className="mt-3">
+            <TopicStats
+              sessions={sessions}
+              manifest={manifest?.sets ?? []}
+            />
+          </div>
         </section>
 
         <section className="mt-8">
@@ -130,6 +185,18 @@ export function Home({ profile, onPlay, onSwitchProfile }: Props) {
           )}
         </section>
       </div>
+
+      {editingAvatar && (
+        <AvatarPickerModal
+          current={profile.avatar}
+          unlockedAvatars={profile.unlockedAvatars}
+          onPick={(a) => {
+            onUpdateProfile({ avatar: a });
+            setEditingAvatar(false);
+          }}
+          onClose={() => setEditingAvatar(false)}
+        />
+      )}
     </main>
   );
 }
@@ -164,12 +231,12 @@ function SetCard({
               key={g.id}
               type="button"
               onClick={() => onPlay(g.id)}
-              className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+              className="rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
             >
               <span aria-hidden className="mr-1">
                 {g.icon}
               </span>
-              Play {g.name}
+              {g.name}
             </button>
           ))
         )}

@@ -10,6 +10,7 @@ export const KidProfileSchema = z.object({
   avatar: z.string(),
   dailyGoal: z.number().int().positive(),
   createdAt: z.number(),
+  unlockedAvatars: z.array(z.string()).optional(),
 });
 export type KidProfile = z.infer<typeof KidProfileSchema>;
 

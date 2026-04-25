@@ -1,0 +1,89 @@
+{
+  "id": "math-g1-subtraction-within-10",
+  "subject": "math",
+  "grade": "1",
+  "title": "Take Away to 10",
+  "topic": "subtraction",
+  "problems": [
+    {
+      "id": "p1",
+      "format": "multiple-choice",
+      "prompt": "5 - 2 = ?",
+      "options": ["2", "3", "4", "5"],
+      "correctIndex": 1,
+      "explanation": "Take 2 from 5 leaves 3."
+    },
+    {
+      "id": "p2",
+      "format": "multiple-choice",
+      "prompt": "8 - 3 = ?",
+      "options": ["4", "5", "6", "7"],
+      "correctIndex": 1,
+      "explanation": "8 take away 3 is 5."
+    },
+    {
+      "id": "p3",
+      "format": "multiple-choice",
+      "prompt": "10 - 4 = ?",
+      "options": ["5", "6", "7", "8"],
+      "correctIndex": 1,
+      "explanation": "10 minus 4 leaves 6."
+    },
+    {
+      "id": "p4",
+      "format": "multiple-choice",
+      "prompt": "6 - 6 = ?",
+      "options": ["0", "1", "6", "12"],
+      "correctIndex": 0,
+      "explanation": "Anything minus itself is 0."
+    },
+    {
+      "id": "p5",
+      "format": "multiple-choice",
+      "prompt": "9 - 5 = ?",
+      "options": ["3", "4", "5", "6"],
+      "correctIndex": 1,
+      "explanation": "9 minus 5 is 4."
+    },
+    {
+      "id": "p6",
+      "format": "multiple-choice",
+      "prompt": "7 - 1 = ?",
+      "options": ["5", "6", "7", "8"],
+      "correctIndex": 1,
+      "explanation": "One less than 7 is 6."
+    },
+    {
+      "id": "p7",
+      "format": "multiple-choice",
+      "prompt": "10 - 7 = ?",
+      "options": ["1", "2", "3", "4"],
+      "correctIndex": 2,
+      "explanation": "10 take away 7 leaves 3."
+    },
+    {
+      "id": "p8",
+      "format": "multiple-choice",
+      "prompt": "4 - 0 = ?",
+      "options": ["0", "3", "4", "5"],
+      "correctIndex": 2,
+      "explanation": "Subtracting zero doesn't change the number — still 4."
+    },
+    {
+      "id": "p9",
+      "format": "multiple-choice",
+      "prompt": "8 - 4 = ?",
+      "options": ["2", "3", "4", "5"],
+      "correctIndex": 2,
+      "explanation": "Half of 8 is 4."
+    },
+    {
+      "id": "p10",
+      "format": "multiple-choice",
+      "prompt": "10 - 10 = ?",
+      "options": ["0", "1", "10", "20"],
+      "correctIndex": 0,
+      "explanation": "All ten taken away leaves zero."
+    }
+  ]
+}

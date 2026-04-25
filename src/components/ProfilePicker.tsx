@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { Grade, KidProfile } from "@/types/profile";
+import { BASE_AVATARS } from "@/lib/avatars";
 
-const AVATARS = ["🦊", "🐼", "🦁", "🐸", "🦄", "🐙", "🦖", "🐳", "🦉", "🐯"];
+const AVATARS = BASE_AVATARS;
 const GRADES: Grade[] = ["1", "2", "3", "4", "5"];
 
 interface Props {

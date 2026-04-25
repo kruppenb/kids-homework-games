@@ -11,6 +11,26 @@
       "formats": ["multiple-choice"]
     },
     {
+      "id": "math-g1-subtraction-within-10",
+      "subject": "math",
+      "grade": "1",
+      "title": "Take Away to 10",
+      "topic": "subtraction",
+      "path": "/content/math/grade-1/subtraction-within-10.json",
+      "problemCount": 10,
+      "formats": ["multiple-choice"]
+    },
+    {
+      "id": "math-g1-mixed-add-sub",
+      "subject": "math",
+      "grade": "1",
+      "title": "Mix It Up",
+      "topic": "addition-subtraction",
+      "path": "/content/math/grade-1/mixed-add-sub.json",
+      "problemCount": 10,
+      "formats": ["multiple-choice"]
+    },
+    {
       "id": "math-g4-multiplication-facts",
       "subject": "math",
       "grade": "4",
@@ -19,6 +39,26 @@
       "path": "/content/math/grade-4/multiplication-facts.json",
       "problemCount": 10,
       "formats": ["multiple-choice", "numeric"]
+    },
+    {
+      "id": "math-g4-multi-digit-subtraction",
+      "subject": "math",
+      "grade": "4",
+      "title": "Multi-Digit Subtraction",
+      "topic": "subtraction",
+      "path": "/content/math/grade-4/multi-digit-subtraction.json",
+      "problemCount": 10,
+      "formats": ["multiple-choice", "numeric"]
+    },
+    {
+      "id": "math-g4-fractions-intro",
+      "subject": "math",
+      "grade": "4",
+      "title": "Fractions Intro",
+      "topic": "fractions",
+      "path": "/content/math/grade-4/fractions-intro.json",
+      "problemCount": 10,
+      "formats": ["multiple-choice", "true-false"]
     }
   ]
 }

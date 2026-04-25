@@ -2,10 +2,15 @@ import { useState } from "react";
 import { useActiveProfile } from "@/hooks/useActiveProfile";
 import { ProfilePicker } from "@/components/ProfilePicker";
 import { Home } from "@/components/Home";
+import { UnlockBanner } from "@/components/UnlockBanner";
 import { QuizShowdown } from "@/games/quiz-showdown";
+import { SpeedRun } from "@/games/speed-run";
+import { TowerBuilder } from "@/games/tower-builder";
 import { loadProblemSet } from "@/lib/content-loader";
 import { addSession } from "@/lib/storage";
 import { recordSessionInDailyProgress } from "@/lib/streaks";
+import { newlyUnlocked, type AvatarTier } from "@/lib/avatars";
+import { playLevelUp } from "@/lib/sounds";
 import type {
   ContentManifestEntry,
   ProblemSet,
@@ -24,10 +29,12 @@ export default function App() {
     selectProfile,
     createProfile,
     clearActiveProfile,
+    updateActiveProfile,
   } = useActiveProfile();
 
   const [view, setView] = useState<View>({ kind: "home" });
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [pendingUnlocks, setPendingUnlocks] = useState<AvatarTier[]>([]);
 
   if (!activeProfile) {
     return (
@@ -53,7 +60,21 @@ export default function App() {
   function handleComplete(result: SessionResult) {
     if (!activeProfile) return;
     addSession(result);
-    recordSessionInDailyProgress(activeProfile, result);
+    const { prevStreak, newStreak } = recordSessionInDailyProgress(
+      activeProfile,
+      result,
+    );
+    const unlocks = newlyUnlocked(prevStreak, newStreak);
+    if (unlocks.length > 0) {
+      const existing = activeProfile.unlockedAvatars ?? [];
+      const merged = [...existing];
+      for (const u of unlocks) {
+        if (!merged.includes(u.emoji)) merged.push(u.emoji);
+      }
+      updateActiveProfile({ unlockedAvatars: merged });
+      setPendingUnlocks(unlocks);
+      playLevelUp();
+    }
   }
 
   function handleExitGame() {
@@ -69,14 +90,15 @@ export default function App() {
   }
 
   if (view.kind === "playing") {
-    return (
-      <QuizShowdown
-        set={view.set}
-        profileId={activeProfile.id}
-        onExit={handleExitGame}
-        onComplete={handleComplete}
-      />
-    );
+    const common = {
+      set: view.set,
+      profileId: activeProfile.id,
+      onExit: handleExitGame,
+      onComplete: handleComplete,
+    };
+    if (view.gameId === "speed-run") return <SpeedRun {...common} />;
+    if (view.gameId === "tower-builder") return <TowerBuilder {...common} />;
+    return <QuizShowdown {...common} />;
   }
 
   return (
@@ -86,10 +108,15 @@ export default function App() {
           {loadError}
         </div>
       )}
+      <UnlockBanner
+        unlocks={pendingUnlocks}
+        onDismiss={() => setPendingUnlocks([])}
+      />
       <Home
         profile={activeProfile}
         onPlay={handlePlay}
         onSwitchProfile={clearActiveProfile}
+        onUpdateProfile={updateActiveProfile}
       />
     </>
   );
