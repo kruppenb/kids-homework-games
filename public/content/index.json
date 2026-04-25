@@ -2,6 +2,7 @@
   "sets": [
     {
       "id": "math-g1-addition-within-10",
+      "kind": "problems",
       "subject": "math",
       "grade": "1",
       "title": "Adding to 10",
@@ -12,6 +13,7 @@
     },
     {
       "id": "math-g1-subtraction-within-10",
+      "kind": "problems",
       "subject": "math",
       "grade": "1",
       "title": "Take Away to 10",
@@ -22,6 +24,7 @@
     },
     {
       "id": "math-g1-mixed-add-sub",
+      "kind": "problems",
       "subject": "math",
       "grade": "1",
       "title": "Mix It Up",
@@ -31,7 +34,18 @@
       "formats": ["multiple-choice"]
     },
     {
+      "id": "math-g1-sight-words",
+      "kind": "words",
+      "subject": "math",
+      "grade": "1",
+      "title": "Number Words",
+      "topic": "vocabulary",
+      "path": "/content/math/grade-1/sight-words.json",
+      "problemCount": 10
+    },
+    {
       "id": "math-g4-multiplication-facts",
+      "kind": "problems",
       "subject": "math",
       "grade": "4",
       "title": "Multiplication Facts",
@@ -42,6 +56,7 @@
     },
     {
       "id": "math-g4-multi-digit-subtraction",
+      "kind": "problems",
       "subject": "math",
       "grade": "4",
       "title": "Multi-Digit Subtraction",
@@ -52,6 +67,7 @@
     },
     {
       "id": "math-g4-fractions-intro",
+      "kind": "problems",
       "subject": "math",
       "grade": "4",
       "title": "Fractions Intro",
@@ -59,6 +75,16 @@
       "path": "/content/math/grade-4/fractions-intro.json",
       "problemCount": 10,
       "formats": ["multiple-choice", "true-false"]
+    },
+    {
+      "id": "math-g4-vocab",
+      "kind": "words",
+      "subject": "math",
+      "grade": "4",
+      "title": "Math Vocabulary",
+      "topic": "vocabulary",
+      "path": "/content/math/grade-4/math-vocab.json",
+      "problemCount": 10
     }
   ]
 }

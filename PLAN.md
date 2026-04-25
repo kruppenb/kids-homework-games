@@ -279,14 +279,27 @@ Goal: kids open the site *without being asked* because the loop is engaging.
 **2.3 — Weekly summary** — *Subsumed into 2.2.* The TopicStats panel already gives parent-visible summary.
 **2.4 — Avatar unlocks** ✅ — 6 bonus avatars unlock at streak milestones (3, 7, 14, 30, 50, 100 days). Banner notification on cross-threshold. AvatarPickerModal opened from header avatar tap.
 
-### Phase 3+: Expand as real needs surface
+### Phase 3: Game library expansion ✅
 
-Don't build speculatively. When a kid is struggling with X at school, add content for X and whatever game best supports it. If an existing game fits, use it; if not, port another from church-games or design new.
+Goal: rough parity with the church-games roster of 9 games. Pure-React ports — no Phaser, to keep bundle small and simple.
+
+**3.1 — WordSet content type** ✅ — new `WordSet` shape (`{words: [{word, hint}]}`), manifest entries gain `kind: "problems" | "words"` discriminator, content-loader has a `loadWordSet` path. Sample vocab content shipped for grades 1 and 4.
+**3.2 — Word Scramble** ✅ — letter unscramble with deterministic per-word scramble + hint button.
+**3.3 — Jeopardy** ✅ — 5-category × 3-value board (uses up to 5 ProblemSets as categories). `multiSet: true` flag on the game; App loads all matching sets.
+**3.4 — Millionaire** ✅ — 10-level money ladder ($100 → $1,000,000) with two safe havens ($1k, $50k) and walk-away option.
+**3.5 — Math Defense** ✅ — wave-based React tower defense (3 waves, 5 enemies/wave, 5 HP). Enemies advance on a 1.3s timer, correct answer defeats the current enemy.
+**3.6 — Match Master** ✅ — 4×3 memory grid pairing problem prompts to their answers.
+
+**Skipped from church-games**: Promised Land (Phaser RPG), Survivors (Phaser auto-battler), Faith Fortress / Scripture Cards / Kingdom Match (heavy Phaser ports). The five above cover the gameplay variety without the Phaser dependency.
+
+### Phase 4+: Expand as real needs surface
+
+Don't build speculatively. When a kid is struggling with X at school, add content for X and whatever game best supports it.
 
 Candidates:
-- Spelling subject (fill-blank format)
+- Spelling subject content (already supported via WordSet)
 - Reading comprehension (MC on short passages)
-- More games ported from church-games: Millionaire, Survivors, Kingdom Match
+- Pull in Phaser-style games (Survivors, Quest) only if existing roster gets stale
 
 ## Verification
 

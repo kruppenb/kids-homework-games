@@ -1,0 +1,19 @@
+{
+  "id": "math-g4-vocab",
+  "subject": "math",
+  "grade": "4",
+  "title": "Math Vocabulary",
+  "topic": "vocabulary",
+  "words": [
+    { "word": "addition", "hint": "Putting numbers together (+)" },
+    { "word": "fraction", "hint": "Part of a whole, like 1/2" },
+    { "word": "remainder", "hint": "What's left over after dividing" },
+    { "word": "product", "hint": "Answer to a multiplication" },
+    { "word": "quotient", "hint": "Answer to a division" },
+    { "word": "perimeter", "hint": "Distance around a shape" },
+    { "word": "denominator", "hint": "Bottom number of a fraction" },
+    { "word": "numerator", "hint": "Top number of a fraction" },
+    { "word": "decimal", "hint": "Numbers with a dot, like 0.5" },
+    { "word": "equation", "hint": "Math sentence with an equals sign" }
+  ]
+}

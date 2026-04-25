@@ -7,6 +7,7 @@ import { isMuted, setMuted } from "@/lib/sounds";
 import type {
   ContentManifest,
   ContentManifestEntry,
+  GameDef,
   QuestionFormat,
 } from "@/types/content";
 import type { DailyProgress, KidProfile, SessionResult } from "@/types/profile";
@@ -17,6 +18,7 @@ import { AvatarPickerModal } from "@/components/AvatarPickerModal";
 interface Props {
   profile: KidProfile;
   onPlay: (entry: ContentManifestEntry, gameId: string) => void;
+  onPlayMulti: (gameId: string) => void;
   onSwitchProfile: () => void;
   onUpdateProfile: (patch: Partial<KidProfile>) => void;
 }
@@ -24,6 +26,7 @@ interface Props {
 export function Home({
   profile,
   onPlay,
+  onPlayMulti,
   onSwitchProfile,
   onUpdateProfile,
 }: Props) {
@@ -59,9 +62,20 @@ export function Home({
     };
   }, []);
 
-  const sets = manifest
+  const allMine = manifest
     ? manifest.sets.filter((s) => s.grade === profile.grade)
     : null;
+  const problemSets = allMine?.filter((s) => s.kind === "problems") ?? null;
+  const wordSets = allMine?.filter((s) => s.kind === "words") ?? null;
+  const multiSetGames = GAMES.filter(
+    (g) =>
+      g.multiSet &&
+      problemSets !== null &&
+      problemSets.length >= 2 &&
+      problemSets.reduce((acc, s) => acc + s.problemCount, 0) >=
+        g.minProblemsToPlay,
+  );
+
   const streak = computeStreak(daily);
   const today = getTodayProgress(daily);
   const goalPct = Math.min(
@@ -151,30 +165,41 @@ export function Home({
           </div>
         </section>
 
-        <section className="mt-8">
-          <h2 className="text-xl font-bold text-slate-900">
-            Hi {profile.name}! Pick a set:
-          </h2>
+        {error && (
+          <p className="mt-6 rounded-xl bg-rose-50 p-4 text-rose-700">
+            Couldn't load content: {error}
+          </p>
+        )}
 
-          {error && (
-            <p className="mt-4 rounded-xl bg-rose-50 p-4 text-rose-700">
-              Couldn't load content: {error}
-            </p>
-          )}
-
-          {sets === null && !error && (
-            <p className="mt-4 text-slate-500">Loading sets…</p>
-          )}
-
-          {sets && sets.length === 0 && (
-            <p className="mt-4 rounded-xl bg-amber-50 p-4 text-amber-800">
-              No sets available for grade {profile.grade} yet. Check back soon!
-            </p>
-          )}
-
-          {sets && sets.length > 0 && (
+        {multiSetGames.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-xl font-bold text-slate-900">Special</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {sets.map((s) => (
+              {multiSetGames.map((g) => (
+                <button
+                  key={g.id}
+                  type="button"
+                  onClick={() => onPlayMulti(g.id)}
+                  className="rounded-2xl bg-gradient-to-br from-blue-700 to-indigo-800 p-5 text-left text-white shadow-sm transition hover:from-blue-600 hover:to-indigo-700"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">{g.icon}</span>
+                    <span className="text-lg font-bold">{g.name}</span>
+                  </div>
+                  <p className="mt-2 text-sm text-blue-100">{g.description}</p>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {problemSets && problemSets.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-xl font-bold text-slate-900">
+              Hi {profile.name}! Pick a set:
+            </h2>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {problemSets.map((s) => (
                 <SetCard
                   key={s.id}
                   entry={s}
@@ -182,8 +207,29 @@ export function Home({
                 />
               ))}
             </div>
-          )}
-        </section>
+          </section>
+        )}
+
+        {wordSets && wordSets.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-xl font-bold text-slate-900">Vocab & Spelling</h2>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {wordSets.map((s) => (
+                <SetCard
+                  key={s.id}
+                  entry={s}
+                  onPlay={(gameId) => onPlay(s, gameId)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {allMine && allMine.length === 0 && (
+          <p className="mt-6 rounded-xl bg-amber-50 p-4 text-amber-800">
+            No sets available for grade {profile.grade} yet. Check back soon!
+          </p>
+        )}
       </div>
 
       {editingAvatar && (
@@ -208,19 +254,13 @@ function SetCard({
   entry: ContentManifestEntry;
   onPlay: (gameId: string) => void;
 }) {
-  const eligible = GAMES.filter(
-    (g) =>
-      entry.problemCount >= g.minProblemsToPlay &&
-      entry.formats.every((f: QuestionFormat) =>
-        g.supportedFormats.includes(f),
-      ),
-  );
+  const eligible = GAMES.filter((g) => isCompatible(g, entry));
 
   return (
     <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
       <h3 className="text-lg font-bold text-slate-900">{entry.title}</h3>
       <p className="text-sm text-slate-500">
-        {entry.problemCount} problems · Grade {entry.grade}
+        {entry.problemCount} {entry.kind === "words" ? "words" : "problems"} · Grade {entry.grade}
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         {eligible.length === 0 ? (
@@ -243,4 +283,16 @@ function SetCard({
       </div>
     </div>
   );
+}
+
+function isCompatible(game: GameDef, entry: ContentManifestEntry): boolean {
+  if (game.multiSet) return false; // shown separately
+  if (game.consumes !== entry.kind) return false;
+  if (entry.problemCount < game.minProblemsToPlay) return false;
+  if (game.consumes === "problems" && game.supportedFormats && entry.formats) {
+    return entry.formats.every((f: QuestionFormat) =>
+      game.supportedFormats!.includes(f),
+    );
+  }
+  return true;
 }

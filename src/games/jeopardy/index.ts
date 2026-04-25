@@ -1,0 +1,1 @@
+export { Jeopardy } from "./Jeopardy";

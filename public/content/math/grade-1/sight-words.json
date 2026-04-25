@@ -1,0 +1,19 @@
+{
+  "id": "math-g1-sight-words",
+  "subject": "math",
+  "grade": "1",
+  "title": "Number Words",
+  "topic": "vocabulary",
+  "words": [
+    { "word": "five", "hint": "The number 5" },
+    { "word": "ten", "hint": "The number 10" },
+    { "word": "plus", "hint": "Means addition (+)" },
+    { "word": "minus", "hint": "Means subtraction (-)" },
+    { "word": "equal", "hint": "When both sides are the same" },
+    { "word": "shape", "hint": "Like a circle or square" },
+    { "word": "count", "hint": "1, 2, 3, 4, 5..." },
+    { "word": "more", "hint": "A bigger amount" },
+    { "word": "less", "hint": "A smaller amount" },
+    { "word": "zero", "hint": "Nothing — the number 0" }
+  ]
+}
