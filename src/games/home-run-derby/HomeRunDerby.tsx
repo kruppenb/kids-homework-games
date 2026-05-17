@@ -80,7 +80,7 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
     }
     setPhase({
       kind: "outcome",
-      hit: { kind: "whiff" },
+      hit: { kind: "whiff", reason: "wrong-answer" },
       runsScored: 0,
       runnersBefore: runners,
       runnersAfter: runners,

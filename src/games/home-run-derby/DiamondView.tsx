@@ -77,13 +77,42 @@ export function DiamondView({
         {renderRunner("third", runnersBefore.third, runnersAfter.third, showRunners)}
 
         {/* Banner */}
-        <div className="absolute left-1/2 top-2 -translate-x-1/2 rounded-md bg-yellow-300 px-3 py-1 text-sm font-extrabold text-slate-900 shadow">
-          {banner}
-          {runsScored > 0 ? ` +${runsScored}` : ""}
+        <div className="absolute left-1/2 top-2 flex -translate-x-1/2 flex-col items-center gap-1">
+          <div className="rounded-md bg-yellow-300 px-3 py-1 text-sm font-extrabold text-slate-900 shadow">
+            {banner}
+            {runsScored > 0 ? ` +${runsScored}` : ""}
+          </div>
+          <div className="rounded-md bg-slate-900/70 px-2 py-0.5 text-xs font-semibold text-white shadow">
+            {feedbackFor(hit)}
+          </div>
         </div>
       </div>
     </div>
   );
+}
+
+function feedbackFor(hit: HitResult): string {
+  switch (hit.kind) {
+    case "homerun":
+      return "Crushed it!";
+    case "triple":
+      return "Nailed it!";
+    case "double":
+      return "Solid contact!";
+    case "single":
+      return hit.weak ? "Bloop single" : "Got a piece";
+    case "whiff":
+      switch (hit.reason) {
+        case "early":
+          return "Too early!";
+        case "late":
+          return "Too late!";
+        case "off-target":
+          return "Off target!";
+        case "wrong-answer":
+          return "Wrong answer!";
+      }
+  }
 }
 
 function renderRunner(

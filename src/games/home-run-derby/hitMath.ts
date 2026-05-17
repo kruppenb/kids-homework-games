@@ -1,9 +1,11 @@
+export type WhiffReason = "early" | "late" | "off-target" | "wrong-answer";
+
 export type HitResult =
   | { kind: "homerun" }
   | { kind: "triple" }
   | { kind: "double" }
   | { kind: "single"; weak: boolean }
-  | { kind: "whiff" };
+  | { kind: "whiff"; reason: WhiffReason };
 
 export interface Runners {
   first: boolean;
@@ -21,7 +23,7 @@ export function classifySwing(args: {
   const dx = args.clickX - args.ballX;
   const dy = args.clickY - args.ballY;
   const d = Math.sqrt(dx * dx + dy * dy) / args.ballRadius;
-  if (d > 1) return { kind: "whiff" };
+  if (d > 1) return { kind: "whiff", reason: "off-target" };
   if (d < 0.15) return { kind: "homerun" };
   if (d < 0.35) return { kind: "triple" };
   if (d < 0.6) return { kind: "double" };

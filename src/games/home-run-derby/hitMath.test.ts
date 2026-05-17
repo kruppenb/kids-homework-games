@@ -190,7 +190,7 @@ describe("advanceRunners", () => {
     const start: Runners = { first: true, second: false, third: true };
     const result = advanceRunners({
       runners: start,
-      hit: { kind: "whiff" },
+      hit: { kind: "whiff", reason: "off-target" },
     });
     expect(result.runsScored).toBe(0);
     expect(result.runners).toEqual(start);

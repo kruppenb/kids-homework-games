@@ -32,7 +32,7 @@ export function SwingMinigame({ onSwing }: Props) {
     const id = window.setTimeout(() => {
       if (resolvedRef.current) return;
       resolvedRef.current = true;
-      onSwingRef.current({ kind: "whiff" });
+      onSwingRef.current({ kind: "whiff", reason: "late" });
     }, PITCH_DURATION_MS + 80);
     return () => window.clearTimeout(id);
   }, []);
@@ -83,7 +83,7 @@ export function SwingMinigame({ onSwing }: Props) {
     // Early swing — before the ball is meaningfully in the zone → whiff.
     if (elapsed < PITCH_DURATION_MS * 0.35) {
       resolvedRef.current = true;
-      onSwingRef.current({ kind: "whiff" });
+      onSwingRef.current({ kind: "whiff", reason: "early" });
       return;
     }
     const hit = classifySwing({
