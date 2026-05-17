@@ -30,8 +30,10 @@ export function classifySwing(args: {
 }
 
 /**
- * Move existing runners and the batter based on the hit, count runs.
- * Weak-single rule: a runner on 2B stops at 3B instead of scoring.
+ * Move the batter and existing runners based on the hit, count runs.
+ * Existing runners advance the same number of bases as the batter,
+ * EXCEPT on singles: normal singles advance runners 2 bases (so a
+ * runner on 2B scores); weak singles advance them only 1 base.
  */
 export function advanceRunners(args: {
   runners: Runners;
@@ -56,7 +58,6 @@ export function advanceRunners(args: {
       ? 1
       : 2
     : batterBases;
-  const weakSingle = hit.kind === "single" && hit.weak;
 
   type Slot = { startBase: 0 | 1 | 2 | 3; advance: number };
   const movers: Slot[] = [{ startBase: 0, advance: batterBases }];
@@ -68,11 +69,7 @@ export function advanceRunners(args: {
   const next: Runners = { first: false, second: false, third: false };
 
   for (const { startBase, advance } of movers) {
-    let endBase = startBase + advance;
-    // Weak-single rule: runner starting on 2B is held at 3B.
-    if (weakSingle && startBase === 2 && endBase >= 4) {
-      endBase = 3;
-    }
+    const endBase = startBase + advance;
     if (endBase >= 4) {
       runsScored += 1;
     } else if (endBase === 1) {
