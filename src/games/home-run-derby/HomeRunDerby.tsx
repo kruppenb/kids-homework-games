@@ -11,12 +11,14 @@ import {
 import { DiamondView } from "./DiamondView";
 import { PitchScreen } from "./PitchScreen";
 import { SwingMinigame } from "./SwingMinigame";
+import { WindUp } from "./WindUp";
 
 const EMPTY_RUNNERS: Runners = { first: false, second: false, third: false };
 
 type Phase =
   | { kind: "intro" }
   | { kind: "pitch" }
+  | { kind: "wind-up"; problem: Problem }
   | { kind: "swing"; problem: Problem; startTimeMs: number }
   | {
       kind: "outcome";
@@ -90,11 +92,7 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
     playCorrect();
     setProblemsAttempted((n) => n + 1);
     setProblemsCorrect((n) => n + 1);
-    setPhase({
-      kind: "swing",
-      problem,
-      startTimeMs: Date.now(),
-    });
+    setPhase({ kind: "wind-up", problem });
   }
 
   function handleSwingResolved(hit: HitResult) {
@@ -225,7 +223,7 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
 
   if (phase.kind === "done") {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-sky-700 to-green-800 p-4 text-white">
+      <main className="min-h-screen select-none bg-gradient-to-br from-sky-700 to-green-800 p-4 text-white">
         <div className="mx-auto max-w-md pt-12 text-center">
           <div className="rounded-3xl bg-slate-900/70 p-8 shadow-md ring-1 ring-sky-400/30">
             <h2 className="text-3xl font-extrabold text-yellow-300">
@@ -291,6 +289,18 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
             problem={currentProblem}
             onCorrect={() => handleCorrectAnswer(currentProblem)}
             onWrong={() => handleWrongAnswer(currentProblem)}
+          />
+        )}
+
+        {phase.kind === "wind-up" && (
+          <WindUp
+            onReady={() =>
+              setPhase({
+                kind: "swing",
+                problem: phase.problem,
+                startTimeMs: Date.now(),
+              })
+            }
           />
         )}
 
