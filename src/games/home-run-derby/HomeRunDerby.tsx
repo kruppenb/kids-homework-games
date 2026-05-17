@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Problem, ProblemSet } from "@/types/content";
 import type { SessionResult } from "@/types/profile";
-import { isAnswerCorrect, shuffle } from "@/lib/problem-pool";
+import { shuffle } from "@/lib/problem-pool";
 import { playCorrect, playWrong } from "@/lib/sounds";
 import {
   advanceRunners,
   type HitResult,
   type Runners,
 } from "./hitMath";
+import { PitchScreen } from "./PitchScreen";
 
 const EMPTY_RUNNERS: Runners = { first: false, second: false, third: false };
 
@@ -266,24 +267,12 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
           <p className="mt-4 text-sm text-sky-100/70">
             (Gameplay UI for this phase wired in a later task.)
           </p>
-          {/* Dev-only buttons so the shell is reachable end-to-end before sub-components land. */}
           {phase.kind === "pitch" && currentProblem && (
-            <div className="mt-6 flex justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => handleCorrectAnswer(currentProblem)}
-                className="rounded-xl bg-emerald-400 px-4 py-2 font-bold text-slate-900"
-              >
-                (dev) Correct
-              </button>
-              <button
-                type="button"
-                onClick={() => handleWrongAnswer(currentProblem)}
-                className="rounded-xl bg-rose-400 px-4 py-2 font-bold text-slate-900"
-              >
-                (dev) Wrong
-              </button>
-            </div>
+            <PitchScreen
+              problem={currentProblem}
+              onCorrect={() => handleCorrectAnswer(currentProblem)}
+              onWrong={() => handleWrongAnswer(currentProblem)}
+            />
           )}
           {phase.kind === "swing" && (
             <div className="mt-6 flex justify-center gap-3">
@@ -311,9 +300,6 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
             </div>
           )}
         </div>
-
-        {/* Suppress unused-var lint for isAnswerCorrect — used in PitchScreen in next task */}
-        <span className="hidden">{isAnswerCorrect.name}</span>
       </div>
     </main>
   );
