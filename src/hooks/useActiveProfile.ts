@@ -8,6 +8,8 @@ import {
 } from "@/lib/storage";
 import type { Grade, KidProfile } from "@/types/profile";
 
+const DAILY_GOAL = 100;
+
 interface UseActiveProfileResult {
   profiles: KidProfile[];
   activeProfile: KidProfile | null;
@@ -22,7 +24,11 @@ interface UseActiveProfileResult {
 }
 
 export function useActiveProfile(): UseActiveProfileResult {
-  const [profiles, setProfiles] = useState<KidProfile[]>(() => getProfiles());
+  const [profiles, setProfiles] = useState<KidProfile[]>(() =>
+    getProfiles().map((p) =>
+      p.dailyGoal === DAILY_GOAL ? p : { ...p, dailyGoal: DAILY_GOAL },
+    ),
+  );
   const [activeId, setActiveId] = useState<string | null>(() =>
     getActiveProfileId(),
   );
@@ -54,7 +60,7 @@ export function useActiveProfile(): UseActiveProfileResult {
         name,
         grade,
         avatar,
-        dailyGoal: 10,
+        dailyGoal: DAILY_GOAL,
         createdAt: Date.now(),
       };
       setProfiles((prev) => [...prev, profile]);
