@@ -15,22 +15,35 @@ const BALL_DIAMETER_AT_END_PX = 56; // visual ball size when "in the zone"
 export function SwingMinigame({ onSwing }: Props) {
   const zoneRef = useRef<HTMLDivElement | null>(null);
   const startedAtRef = useRef<number>(Date.now());
-  const pointerRef = useRef<{ x: number; y: number } | null>(null);
   const resolvedRef = useRef(false);
   const [crosshair, setCrosshair] = useState<{ x: number; y: number } | null>(null);
 
-  // Auto-resolve as whiff if the pitch passes without a swing.
+  // Keep latest onSwing in a ref so the auto-whiff effect can run exactly once per mount.
+  const onSwingRef = useRef(onSwing);
+  useEffect(() => {
+    onSwingRef.current = onSwing;
+  }, [onSwing]);
+
+  // Auto-resolve as whiff if the pitch passes without a swing. Runs once per mount;
+  // the parent re-rendering must NOT reset the pitch clock.
   useEffect(() => {
     startedAtRef.current = Date.now();
     resolvedRef.current = false;
     const id = window.setTimeout(() => {
       if (resolvedRef.current) return;
       resolvedRef.current = true;
-      onSwing({ kind: "whiff" });
-    }, PITCH_DURATION_MS + 80); // small grace to avoid double-resolution race
+      onSwingRef.current({ kind: "whiff" });
+    }, PITCH_DURATION_MS + 80);
     return () => window.clearTimeout(id);
-  }, [onSwing]);
+  }, []);
 
+  // Two parallel tracks: the visible ball uses CSS transitions (mounted once,
+  // transitions to BALL_END over PITCH_DURATION_MS). The click-time math below
+  // recomputes the ball's logical position from `Date.now() - startedAtRef.current`
+  // and the same easing curve. The two should agree under normal conditions; if
+  // the browser throttles CSS animations (off-screen tab, low power), the
+  // visible ball and the click target can drift slightly. Acceptable for a
+  // kid game where the swing is paced in ~1 second.
   function ballPositionNow(zoneRect: DOMRect): {
     x: number;
     y: number;
@@ -54,7 +67,6 @@ export function SwingMinigame({ onSwing }: Props) {
     const rect = zoneRef.current.getBoundingClientRect();
     const clampedX = Math.max(rect.left, Math.min(rect.right, e.clientX));
     const clampedY = Math.max(rect.top, Math.min(rect.bottom, e.clientY));
-    pointerRef.current = { x: clampedX, y: clampedY };
     setCrosshair({
       x: clampedX - rect.left,
       y: clampedY - rect.top,
@@ -71,7 +83,7 @@ export function SwingMinigame({ onSwing }: Props) {
     // Early swing — before the ball is meaningfully in the zone → whiff.
     if (elapsed < PITCH_DURATION_MS * 0.35) {
       resolvedRef.current = true;
-      onSwing({ kind: "whiff" });
+      onSwingRef.current({ kind: "whiff" });
       return;
     }
     const hit = classifySwing({
@@ -83,7 +95,7 @@ export function SwingMinigame({ onSwing }: Props) {
     });
     resolvedRef.current = true;
     if (hit.kind !== "whiff") playCrack();
-    onSwing(hit);
+    onSwingRef.current(hit);
   }
 
   return (
