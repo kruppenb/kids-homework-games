@@ -28,3 +28,6 @@ dist-ssr
 
 # Vitest coverage
 coverage/
+
+# Playwright MCP debug output
+.playwright-mcp/
