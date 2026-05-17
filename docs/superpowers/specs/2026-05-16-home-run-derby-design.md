@@ -69,11 +69,13 @@ The horizontal click offset from the ball center (measured in ball-radius units)
 
 Per-at-bat state: `runners: { first: boolean; second: boolean; third: boolean }`.
 
-On a hit of `N` bases:
-- The batter is placed on base `N` (or scores if `N == 4`).
-- Every existing runner advances `N` bases.
+On a fair hit:
+- The batter advances to a base based on the hit (1B for single/weak-single, 2B for double, 3B for triple, scores on HR).
+- **Existing runners** advance differently depending on hit type:
+  - **HR / Triple / Double:** advance the same number of bases as the batter (4 / 3 / 2).
+  - **Normal single:** advance **2 bases** (so a runner on 2B scores).
+  - **Weak single:** advance **1 base** (so a runner on 2B is held at 3B; a runner on 3B still scores).
 - Any runner whose new base is > 3 scores (+1 to `runs`).
-- **Exception:** on a "Weak single", a runner on second base advances only to third (does not score). All other advances are normal.
 
 On a strikeout (out), runners stay where they are.
 
