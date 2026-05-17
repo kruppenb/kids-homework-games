@@ -52,20 +52,6 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
     setPhase({ kind: "pitch" });
   }
 
-  function nextPhaseAfterResolution() {
-    // Called after an at-bat ends OR after a non-out strike.
-    // If we're out of problems, end the game.
-    if (problemIndexRef.current >= problems.length) {
-      setPhase({ kind: "done" });
-      return;
-    }
-    if (outs >= 3) {
-      setPhase({ kind: "done" });
-      return;
-    }
-    setPhase({ kind: "pitch" });
-  }
-
   function handleWrongAnswer(problem: Problem) {
     playWrong();
     setProblemsAttempted((n) => n + 1);
@@ -144,11 +130,14 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
   useEffect(() => {
     if (phase.kind !== "between-pitches") return;
     const id = window.setTimeout(() => {
-      nextPhaseAfterResolution();
+      if (problemIndexRef.current >= problems.length || outs >= 3) {
+        setPhase({ kind: "done" });
+      } else {
+        setPhase({ kind: "pitch" });
+      }
     }, 500);
     return () => window.clearTimeout(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
+  }, [phase, outs, problems.length]);
 
   // Fire completion exactly once when the game ends.
   useEffect(() => {
