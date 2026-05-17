@@ -9,6 +9,7 @@ import {
   type Runners,
 } from "./hitMath";
 import { PitchScreen } from "./PitchScreen";
+import { SwingMinigame } from "./SwingMinigame";
 
 const EMPTY_RUNNERS: Runners = { first: false, second: false, third: false };
 
@@ -275,29 +276,7 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
             />
           )}
           {phase.kind === "swing" && (
-            <div className="mt-6 flex justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => handleSwingResolved({ kind: "homerun" })}
-                className="rounded-xl bg-yellow-400 px-4 py-2 font-bold text-slate-900"
-              >
-                (dev) Home run
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSwingResolved({ kind: "single", weak: false })}
-                className="rounded-xl bg-yellow-200 px-4 py-2 font-bold text-slate-900"
-              >
-                (dev) Single
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSwingResolved({ kind: "whiff" })}
-                className="rounded-xl bg-rose-300 px-4 py-2 font-bold text-slate-900"
-              >
-                (dev) Whiff
-              </button>
-            </div>
+            <SwingMinigame onSwing={handleSwingResolved} />
           )}
         </div>
       </div>
