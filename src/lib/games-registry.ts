@@ -66,6 +66,15 @@ export const GAMES: GameDef[] = [
     multiSet: true,
   },
   {
+    id: "home-run-derby",
+    name: "Home Run Derby",
+    icon: "⚾",
+    description: "Answer to swing — perfect timing for a homer!",
+    consumes: "problems",
+    supportedFormats: ["multiple-choice", "numeric", "true-false"],
+    minProblemsToPlay: 6,
+  },
+  {
     id: "word-scramble",
     name: "Word Scramble",
     icon: "🔤",

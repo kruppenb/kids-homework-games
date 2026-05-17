@@ -8,6 +8,7 @@ import { SpeedRun } from "@/games/speed-run";
 import { TowerBuilder } from "@/games/tower-builder";
 import { Millionaire } from "@/games/millionaire";
 import { MathDefense } from "@/games/math-defense";
+import { HomeRunDerby } from "@/games/home-run-derby";
 import { MatchMaster } from "@/games/match-master";
 import { Jeopardy } from "@/games/jeopardy";
 import { WordScramble } from "@/games/word-scramble";
@@ -149,6 +150,7 @@ export default function App() {
     if (view.gameId === "tower-builder") return <TowerBuilder {...common} />;
     if (view.gameId === "millionaire") return <Millionaire {...common} />;
     if (view.gameId === "math-defense") return <MathDefense {...common} />;
+    if (view.gameId === "home-run-derby") return <HomeRunDerby {...common} />;
     if (view.gameId === "match-master") return <MatchMaster {...common} />;
     return <QuizShowdown {...common} />;
   }
