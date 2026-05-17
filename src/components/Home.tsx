@@ -18,7 +18,6 @@ import { AvatarPickerModal } from "@/components/AvatarPickerModal";
 interface Props {
   profile: KidProfile;
   onPlay: (entry: ContentManifestEntry, gameId: string) => void;
-  onPlayMulti: (gameId: string) => void;
   onSwitchProfile: () => void;
   onUpdateProfile: (patch: Partial<KidProfile>) => void;
 }
@@ -26,7 +25,6 @@ interface Props {
 export function Home({
   profile,
   onPlay,
-  onPlayMulti,
   onSwitchProfile,
   onUpdateProfile,
 }: Props) {
@@ -67,14 +65,6 @@ export function Home({
     : null;
   const problemSets = allMine?.filter((s) => s.kind === "problems") ?? null;
   const wordSets = allMine?.filter((s) => s.kind === "words") ?? null;
-  const multiSetGames = GAMES.filter(
-    (g) =>
-      g.multiSet &&
-      problemSets !== null &&
-      problemSets.length >= 2 &&
-      problemSets.reduce((acc, s) => acc + s.problemCount, 0) >=
-        g.minProblemsToPlay,
-  );
 
   const streak = computeStreak(daily);
   const today = getTodayProgress(daily);
@@ -171,28 +161,6 @@ export function Home({
           </p>
         )}
 
-        {multiSetGames.length > 0 && (
-          <section className="mt-8">
-            <h2 className="text-xl font-bold text-slate-900">Special</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {multiSetGames.map((g) => (
-                <button
-                  key={g.id}
-                  type="button"
-                  onClick={() => onPlayMulti(g.id)}
-                  className="rounded-2xl bg-gradient-to-br from-blue-700 to-indigo-800 p-5 text-left text-white shadow-sm transition hover:from-blue-600 hover:to-indigo-700"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">{g.icon}</span>
-                    <span className="text-lg font-bold">{g.name}</span>
-                  </div>
-                  <p className="mt-2 text-sm text-blue-100">{g.description}</p>
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
-
         {problemSets && problemSets.length > 0 && (
           <section className="mt-8">
             <h2 className="text-xl font-bold text-slate-900">
@@ -286,7 +254,7 @@ function SetCard({
 }
 
 function isCompatible(game: GameDef, entry: ContentManifestEntry): boolean {
-  if (game.multiSet) return false; // shown separately
+  if (game.multiSet) return false;
   if (game.consumes !== entry.kind) return false;
   if (entry.problemCount < game.minProblemsToPlay) return false;
   if (game.consumes === "problems" && game.supportedFormats && entry.formats) {

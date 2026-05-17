@@ -12,11 +12,7 @@ import { HomeRunDerby } from "@/games/home-run-derby";
 import { MatchMaster } from "@/games/match-master";
 import { Jeopardy } from "@/games/jeopardy";
 import { WordScramble } from "@/games/word-scramble";
-import {
-  loadManifest,
-  loadProblemSet,
-  loadWordSet,
-} from "@/lib/content-loader";
+import { loadProblemSet, loadWordSet } from "@/lib/content-loader";
 import { addSession } from "@/lib/storage";
 import { recordSessionInDailyProgress } from "@/lib/streaks";
 import { newlyUnlocked, type AvatarTier } from "@/lib/avatars";
@@ -82,27 +78,6 @@ export default function App() {
       .then((set) => setView({ kind: "playing-problem", set, gameId }))
       .catch((e: unknown) => {
         setLoadError(e instanceof Error ? e.message : "Failed to load set");
-        setView({ kind: "home" });
-      });
-  }
-
-  function handlePlayMulti(gameId: string) {
-    if (!activeProfile) return;
-    setLoadError(null);
-    setView({ kind: "loading", gameId });
-    loadManifest()
-      .then(async (m) => {
-        const eligible = m.sets.filter(
-          (s) => s.kind === "problems" && s.grade === activeProfile.grade,
-        );
-        const sets = await Promise.all(eligible.map((e) => loadProblemSet(e)));
-        if (sets.length === 0) {
-          throw new Error("No problem sets available for this grade.");
-        }
-        setView({ kind: "playing-multi", sets, gameId });
-      })
-      .catch((e: unknown) => {
-        setLoadError(e instanceof Error ? e.message : "Failed to load sets");
         setView({ kind: "home" });
       });
   }
@@ -195,7 +170,6 @@ export default function App() {
       <Home
         profile={activeProfile}
         onPlay={handlePlay}
-        onPlayMulti={handlePlayMulti}
         onSwitchProfile={clearActiveProfile}
         onUpdateProfile={updateActiveProfile}
       />
