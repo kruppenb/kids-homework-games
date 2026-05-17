@@ -99,7 +99,6 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
 
   function handleSwingResolved(hit: HitResult) {
     problemIndexRef.current += 1;
-    setHitBreakdown((b) => ({ ...b, [hit.kind]: (b[hit.kind] ?? 0) + 1 }));
     if (hit.kind === "whiff") {
       const newStrikes = strikesThisAB + 1;
       const isOut = newStrikes >= 3;
@@ -108,6 +107,11 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
         setOuts((o) => o + 1);
       } else {
         setStrikesThisAB(newStrikes);
+      }
+      // Count a 3rd-strike whiff as a strikeout for the outro summary; a non-out
+      // whiff is just a missed swing and doesn't need its own bucket.
+      if (isOut) {
+        setHitBreakdown((b) => ({ ...b, strikeout: (b.strikeout ?? 0) + 1 }));
       }
       setPhase({
         kind: "outcome",
@@ -120,6 +124,7 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
       return;
     }
     // Fair hit — advance runners.
+    setHitBreakdown((b) => ({ ...b, [hit.kind]: (b[hit.kind] ?? 0) + 1 }));
     const { runners: nextRunners, runsScored } = advanceRunners({
       runners,
       hit,

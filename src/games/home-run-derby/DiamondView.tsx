@@ -97,8 +97,10 @@ function renderRunner(
   //   - Was here, no longer: render once on this base (will fade/move out next animation tick).
   //   - Arrived: render at this base only after the runner animation tick.
   if (!before && !after) return null;
-  const visible = before ? true : show;
-  if (!visible) return null;
+  // Initial frame: render where they started. After the `show` flip, only
+  // render if they're still on that base (otherwise they advanced or scored).
+  if (show && !after) return null;
+  if (!show && !before) return null;
   return (
     <div
       key={base}
