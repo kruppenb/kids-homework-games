@@ -68,3 +68,15 @@ export function playLevelUp() {
   setTimeout(() => tone(659, 90), 80);
   setTimeout(() => tone(784, 200), 160);
 }
+
+export function playCrack() {
+  // Sharp short percussive "crack of the bat"
+  tone(600, 70, "sawtooth");
+}
+
+export function playCheer() {
+  // Rising chord for HR or scoring play
+  tone(523, 110);
+  setTimeout(() => tone(659, 110), 90);
+  setTimeout(() => tone(784, 220), 180);
+}
