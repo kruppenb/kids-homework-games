@@ -25,3 +25,6 @@ dist-ssr
 
 # Superpowers brainstorming mockups (visual companion)
 .superpowers/
+
+# Vitest coverage
+coverage/
