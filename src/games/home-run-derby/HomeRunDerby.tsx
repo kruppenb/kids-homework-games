@@ -8,6 +8,7 @@ import {
   type HitResult,
   type Runners,
 } from "./hitMath";
+import { DiamondView } from "./DiamondView";
 import { PitchScreen } from "./PitchScreen";
 import { SwingMinigame } from "./SwingMinigame";
 
@@ -17,7 +18,14 @@ type Phase =
   | { kind: "intro" }
   | { kind: "pitch" }
   | { kind: "swing"; problem: Problem; startTimeMs: number }
-  | { kind: "outcome"; hit: HitResult; runsScored: number }
+  | {
+      kind: "outcome";
+      hit: HitResult;
+      runsScored: number;
+      runnersBefore: Runners;
+      runnersAfter: Runners;
+      wasOut: boolean;
+    }
   | { kind: "between-pitches" }
   | { kind: "done" };
 
@@ -55,32 +63,27 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
   }
 
   function handleWrongAnswer(problem: Problem) {
+    void problem;
     playWrong();
     setProblemsAttempted((n) => n + 1);
     problemIndexRef.current += 1;
     const newStrikes = strikesThisAB + 1;
-    if (newStrikes >= 3) {
+    const isOut = newStrikes >= 3;
+    if (isOut) {
       setStrikesThisAB(0);
-      const newOuts = outs + 1;
-      setOuts(newOuts);
-      // Show OUT banner via the outcome phase
+      setOuts((o) => o + 1);
       setHitBreakdown((b) => ({ ...b, strikeout: (b.strikeout ?? 0) + 1 }));
-      setPhase({
-        kind: "outcome",
-        hit: { kind: "whiff" }, // re-used to mean "out" for the banner
-        runsScored: 0,
-      });
     } else {
       setStrikesThisAB(newStrikes);
-      // Brief "STRIKE" banner via outcome, but no runner change
-      setPhase({
-        kind: "outcome",
-        hit: { kind: "whiff" },
-        runsScored: 0,
-      });
     }
-    // Suppress lint about unused param (kept for future use in feedback text)
-    void problem;
+    setPhase({
+      kind: "outcome",
+      hit: { kind: "whiff" },
+      runsScored: 0,
+      runnersBefore: runners,
+      runnersAfter: runners,
+      wasOut: isOut,
+    });
   }
 
   function handleCorrectAnswer(problem: Problem) {
@@ -99,16 +102,24 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
     setHitBreakdown((b) => ({ ...b, [hit.kind]: (b[hit.kind] ?? 0) + 1 }));
     if (hit.kind === "whiff") {
       const newStrikes = strikesThisAB + 1;
-      if (newStrikes >= 3) {
+      const isOut = newStrikes >= 3;
+      if (isOut) {
         setStrikesThisAB(0);
         setOuts((o) => o + 1);
       } else {
         setStrikesThisAB(newStrikes);
       }
-      setPhase({ kind: "outcome", hit, runsScored: 0 });
+      setPhase({
+        kind: "outcome",
+        hit,
+        runsScored: 0,
+        runnersBefore: runners,
+        runnersAfter: runners,
+        wasOut: isOut,
+      });
       return;
     }
-    // Fair hit — advance runners
+    // Fair hit — advance runners.
     const { runners: nextRunners, runsScored } = advanceRunners({
       runners,
       hit,
@@ -116,7 +127,14 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
     setRunners(nextRunners);
     setRuns((r) => r + runsScored);
     setStrikesThisAB(0);
-    setPhase({ kind: "outcome", hit, runsScored });
+    setPhase({
+      kind: "outcome",
+      hit,
+      runsScored,
+      runnersBefore: runners,
+      runnersAfter: nextRunners,
+      wasOut: false,
+    });
   }
 
   // After the outcome banner displays for a moment, advance.
@@ -232,7 +250,7 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
     );
   }
 
-  // Placeholder render for in-game phases — filled in by later tasks.
+  // In-game render (pitch / swing / outcome / between-pitches).
   const currentProblem = problems[problemIndexRef.current];
   return (
     <main className="min-h-screen bg-gradient-to-br from-sky-700 to-green-800 p-4 text-white">
@@ -255,30 +273,39 @@ export function HomeRunDerby({ set, profileId, onExit, onComplete }: Props) {
             <span className="rounded-full bg-yellow-400/30 px-3 py-1">
               {runs} runs
             </span>
+            <span className="rounded-full bg-amber-400/30 px-3 py-1 font-mono">
+              {runners.first ? "●" : "○"}
+              {runners.second ? "●" : "○"}
+              {runners.third ? "●" : "○"}
+            </span>
           </div>
         </header>
 
-        <div className="mt-8 rounded-3xl bg-slate-900/70 p-6 text-center">
-          <p className="text-xs uppercase tracking-wide text-sky-200/60">
-            Phase: {phase.kind}
-          </p>
-          <p className="mt-2 text-2xl font-bold">
-            {currentProblem?.prompt ?? "(no more problems)"}
-          </p>
-          <p className="mt-4 text-sm text-sky-100/70">
-            (Gameplay UI for this phase wired in a later task.)
-          </p>
-          {phase.kind === "pitch" && currentProblem && (
-            <PitchScreen
-              problem={currentProblem}
-              onCorrect={() => handleCorrectAnswer(currentProblem)}
-              onWrong={() => handleWrongAnswer(currentProblem)}
-            />
-          )}
-          {phase.kind === "swing" && (
-            <SwingMinigame onSwing={handleSwingResolved} />
-          )}
-        </div>
+        {phase.kind === "pitch" && currentProblem && (
+          <PitchScreen
+            problem={currentProblem}
+            onCorrect={() => handleCorrectAnswer(currentProblem)}
+            onWrong={() => handleWrongAnswer(currentProblem)}
+          />
+        )}
+
+        {phase.kind === "swing" && (
+          <SwingMinigame onSwing={handleSwingResolved} />
+        )}
+
+        {phase.kind === "outcome" && (
+          <DiamondView
+            hit={phase.hit}
+            runsScored={phase.runsScored}
+            runnersBefore={phase.runnersBefore}
+            runnersAfter={phase.runnersAfter}
+            wasOut={phase.wasOut}
+          />
+        )}
+
+        {phase.kind === "between-pitches" && (
+          <div className="mt-6 text-center text-sky-200/60">Next pitch...</div>
+        )}
       </div>
     </main>
   );
