@@ -1,6 +1,6 @@
 # Project: Kids Homework Games
 
-Learning games for my 1st and 4th grader — nightly practice on school subjects (math first, others as needed).
+Learning games for my 1st and 4th grader â€” nightly practice on school subjects (math first, others as needed).
 
 See `PLAN.md` for full roadmap and data model.
 
@@ -38,7 +38,7 @@ npm run typecheck  # tsc --noEmit
 
 ## Relation to church-games
 
-`church-games` (C:\repos\church-games) is a separate, working project with a similar tech stack. Some game designs (Quiz Showdown, Jeopardy, Millionaire, etc.) are copied here and adapted — but the schemas, UX, audience, and branding are independent. No shared code or shared repo. Backport fixes manually if both ever need the same change.
+`church-games` (C:\repos\church-games) is a separate, working project with a similar tech stack. Some game designs (Quiz Showdown, Jeopardy, Millionaire, etc.) are copied here and adapted â€” but the schemas, UX, audience, and branding are independent. No shared code or shared repo. Backport fixes manually if both ever need the same change.
 
 ## Non-Goals
 
@@ -51,3 +51,10 @@ npm run typecheck  # tsc --noEmit
 - Acceptance test is kids playing on an iPad. No full e2e harness yet.
 - `npm run build` + manual playthrough before shipping each phase.
 - Add Vitest unit tests for `lib/` pure functions (`streaks.ts`, `problem-pool.ts`) as those grow.
+
+## Image generation
+
+Use the shared pipeline, never a direct image API call:
+`node C:\repos\art-pipeline\art.mjs --out <file> [--ref <existing art>] [--crop W:H] [--style <name>] "<prompt>"`
+â€” Codex / GPT-6 Astra on the ChatGPT subscription by default, Gemini API fallback, chosen automatically.
+Details and prompting tips: `C:\repos\art-pipeline\README.md` (summary in `C:\repos\CLAUDE.md`).
